@@ -35,6 +35,26 @@ export default function ScoreLayout({
             )}
         >
             <div
+                style={{
+                    height: state.offsetTop,
+                    marginLeft: float == "right" ? 250 : undefined,
+                    marginRight: float == "left" ? 250 : undefined,
+                }}
+                className={twMerge(
+                    "py-5 px-20 text-white z-10 absolute bottom-0 right-0 left-0 flex flex-row justify-between",
+                    float === "right" && "flex-row-reverse",
+                )}
+            >
+                <div className="flex flex-col items-center">
+                    <p className="text-[2rem]">Lỗi</p>
+                    <p className="font-bold leading-tight text-[5rem]">0</p>
+                </div>
+                <div className="flex flex-col items-center">
+                    <p className="text-[2rem]">Tỉ số</p>
+                    <p className="font-bold leading-tight text-[5rem]">0</p>
+                </div>
+            </div>
+            <div
                 className={twMerge(
                     "absolute inset-0",
                     float === "left"
@@ -111,10 +131,7 @@ function SideSection({
                     float === "left" ? "ml-5" : "pr-5",
                     float === "right" && "text-right",
                 )}
-            >
-                <p className="text-[2rem]">Lỗi</p>
-                <p className="font-bold leading-[3.5rem]">0</p>
-            </div>
+            ></div>
         </div>
     )
 }

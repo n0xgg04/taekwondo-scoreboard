@@ -1,11 +1,13 @@
 import * as React from "react"
 import { useAppSelector } from "@/hooks/useAppSelector.tsx"
 import useWindowSize from "@/hooks/useWindowSize.tsx"
+import Counter from "@/components/Counter.tsx"
 
 type Props = {}
 export default function RoundInfo(props: Props) {
     const state = useAppSelector((state) => state.app)
     const { height } = useWindowSize()
+    const [timeLeft, setTimeLeft] = React.useState(state.counter)
 
     return (
         <div
@@ -19,9 +21,7 @@ export default function RoundInfo(props: Props) {
                 <p className="text-[3rem] uppercase leading-10 mt-2">Match</p>
                 <p className="text-[5rem] leading-tight font-bold">001</p>
             </div>
-            <div className="w-full h-[35%] bg-round grid place-items-center">
-                <p className="text-[8rem] text-black font-bold">01:00</p>
-            </div>
+            <Counter />
             <div className="flex flex-col justify-end items-center mt-2">
                 <p className="uppercase text-[3rem]">Round</p>
                 <p className="text-[7rem]">1</p>

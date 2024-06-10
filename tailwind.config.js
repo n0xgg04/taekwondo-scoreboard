@@ -9,7 +9,7 @@ export default {
                 "blue-start": "#6443fd",
                 "red-end": "#9e2433",
                 "red-start": "#cd2223",
-                "blue-zone": "#a998ff",
+                "blue-zone": "rgb(46,88,234)",
                 "red-zone": "#fc3f3b",
                 round: "#e1fea6",
             },
