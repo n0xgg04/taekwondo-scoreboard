@@ -1,6 +1,6 @@
 import * as React from "react"
 import { createBrowserRouter } from "react-router-dom"
-import { Homepage, NotFound, ScoreboardPage } from "@/pages"
+import { ControllerPage, Homepage, NotFound, ScoreboardPage } from "@/pages"
 import { RouterProvider } from "react-router"
 import { store } from "./stores"
 import { Provider } from "react-redux"
@@ -15,6 +15,10 @@ const router = createBrowserRouter([
     {
         path: "/scoreboard/:id",
         element: <ScoreboardPage />,
+    },
+    {
+        path: "/controller/:id",
+        element: <ControllerPage />,
     },
     {
         path: "*",

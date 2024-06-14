@@ -9,12 +9,14 @@ type Props = {
     flag: React.ReactNode
     float?: "left" | "right"
     scores?: number
+    city: string
 }
 
 export default function ScoreLayout({
     flag,
     float = "left",
     scores = 0,
+    city = "",
 }: Props) {
     const scoreBoxRef = React.useRef<HTMLDivElement>(null)
     const state = useAppSelector((state) => state.app)
@@ -71,7 +73,7 @@ export default function ScoreLayout({
                 )}
             >
                 <p className="grow text-[4rem] text-center uppercase text-white">
-                    Hà Nội
+                    {city}
                 </p>
             </div>
             <div
