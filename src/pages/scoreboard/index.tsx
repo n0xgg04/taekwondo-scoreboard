@@ -6,10 +6,24 @@ import RoundInfo from "@/components/RoundInfo.tsx"
 import { Helmet } from "react-helmet"
 import useSocket from "@/hooks/useSocket.tsx"
 import { useAppSelector } from "@/hooks/useAppSelector.tsx"
+import { socket } from "@/config"
+import { useAppDispatch } from "@/hooks/useAppDispatch.tsx"
+import { AppSlice } from "@/stores/slices/app.slice.ts"
 
 export default function ScoreboardPage() {
     useSocket()
     const state = useAppSelector((s) => s.app)
+    const dispatch = useAppDispatch()
+
+    React.useEffect(() => {
+        socket.on("set_status", (status: string) => {
+            dispatch(AppSlice.actions.setStatus(status as any))
+        })
+    }, [])
+
+    React.useEffect(() => {
+        dispatch(AppSlice.actions.setStatus("not-start-yet"))
+    }, [])
 
     return (
         <Scoreboard>
@@ -17,6 +31,15 @@ export default function ScoreboardPage() {
                 <div className="fixed inset-0 size-full bg-black grid place-items-center">
                     <p className="text-2xl">Đang kết nối tới máy chủ...</p>
                 </div>
+            )}
+            {state.status === "not-start-yet" ? (
+                <div className="fixed inset-0 z-[999] size-full bg-black grid place-items-center">
+                    <p className="text-2xl text-white">
+                        Trận đấu chưa sẵn sàng...
+                    </p>
+                </div>
+            ) : (
+                ""
             )}
             <Helmet>
                 <title>Taekwondo</title>

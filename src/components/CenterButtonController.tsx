@@ -5,6 +5,7 @@ import { FaPlay } from "react-icons/fa"
 import { useAppDispatch } from "@/hooks/useAppDispatch.tsx"
 import { AppSlice } from "@/stores/slices/app.slice.ts"
 import { twMerge } from "tailwind-merge"
+import { socket } from "@/config"
 
 type Props = {}
 export default function CenterButtonController() {
@@ -15,7 +16,8 @@ export default function CenterButtonController() {
         let res: typeof state.status
         if (state.status != "started") res = "started"
         else res = "paused"
-        dispatch(AppSlice.actions.setPause(res))
+        socket.emit("controller_change_status", res)
+        dispatch(AppSlice.actions.setStatus(res))
     }, [state.status])
 
     return (

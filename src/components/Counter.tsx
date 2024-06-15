@@ -23,6 +23,8 @@ export default function Counter() {
 
     React.useEffect(() => {
         const timer = setInterval(() => {
+            if (state.status === "paused" || state.status === "not-start-yet")
+                return
             setTimeLeft((prevTimeLeft) => {
                 if (prevTimeLeft > 0) {
                     socket.emit("controller_sync_time", prevTimeLeft - 1)
@@ -39,7 +41,7 @@ export default function Counter() {
         })
 
         return () => clearInterval(timer)
-    }, [state.counter])
+    }, [state.counter, state.status])
 
     return (
         <div className="w-full h-[35%] bg-round grid place-items-center">

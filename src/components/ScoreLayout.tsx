@@ -10,6 +10,8 @@ type Props = {
     float?: "left" | "right"
     scores?: number
     city: string
+    warn: number
+    win: number
 }
 
 export default function ScoreLayout({
@@ -17,6 +19,8 @@ export default function ScoreLayout({
     float = "left",
     scores = 0,
     city = "",
+    warn = 0,
+    win = 0,
 }: Props) {
     const scoreBoxRef = React.useRef<HTMLDivElement>(null)
     const state = useAppSelector((state) => state.app)
@@ -49,11 +53,13 @@ export default function ScoreLayout({
             >
                 <div className="flex flex-col items-center">
                     <p className="text-[2rem]">Lỗi</p>
-                    <p className="font-bold leading-tight text-[5rem]">0</p>
+                    <p className="font-bold leading-tight text-[5rem]">
+                        {warn}
+                    </p>
                 </div>
                 <div className="flex flex-col items-center">
                     <p className="text-[2rem]">Tỉ số</p>
-                    <p className="font-bold leading-tight text-[5rem]">0</p>
+                    <p className="font-bold leading-tight text-[5rem]">{win}</p>
                 </div>
             </div>
             <div

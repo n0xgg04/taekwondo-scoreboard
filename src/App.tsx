@@ -6,18 +6,15 @@ import { store } from "./stores"
 import { Provider } from "react-redux"
 import { Suspense } from "react"
 import Loading from "@/components/Loading.tsx"
+import { MantineProvider } from "@mantine/core"
 
 const router = createBrowserRouter([
     {
         path: "/",
-        element: <Homepage />,
-    },
-    {
-        path: "/scoreboard/:id",
         element: <ScoreboardPage />,
     },
     {
-        path: "/controller/:id",
+        path: "/dieukhien",
         element: <ControllerPage />,
     },
     {
@@ -30,7 +27,9 @@ export default function App() {
     return (
         <Suspense fallback={<Loading />}>
             <Provider store={store}>
-                <RouterProvider router={router} />
+                <MantineProvider>
+                    <RouterProvider router={router} />
+                </MantineProvider>
             </Provider>
         </Suspense>
     )

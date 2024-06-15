@@ -7,16 +7,28 @@ type StateType = {
     isRealtime: boolean
     redPoint: number
     bluePoint: number
+    redWarn: number
+    blueWarn: number
+    redWin: number
+    blueWin: number
     redCity: string
     blueCity: string
     contestName: string
+    round: number
+    match: string
 }
 
 const initialState: StateType = {
     offsetTop: 0,
     counter: 120,
+    redWarn: 0,
+    redWin: 0,
+    blueWarn: 0,
+    blueWin: 0,
+    round: 1,
     status: "not-start-yet",
     isRealtime: false,
+    match: "001",
     bluePoint: 0,
     redPoint: 0,
     redCity: "<Chưa đặt>",
@@ -37,6 +49,9 @@ const slice = createSlice({
         setPause: (state, action) => {
             state.status = action.payload
         },
+        setStatus: (status, action: PayloadAction<StateType["status"]>) => {
+            status.status = action.payload
+        },
         setRealtime: (state, action) => {
             state.isRealtime = action.payload
         },
@@ -54,6 +69,18 @@ const slice = createSlice({
         },
         setContestName: (state, action) => {
             state.contestName = action.payload
+        },
+        setRedWarn: (state, action) => {
+            state.redWarn = action.payload
+        },
+        setRedWin: (state, action) => {
+            state.redWin = action.payload
+        },
+        setBlueWarn: (state, action) => {
+            state.blueWarn = action.payload
+        },
+        setBlueWin: (state, action) => {
+            state.blueWin = action.payload
         },
     },
 })

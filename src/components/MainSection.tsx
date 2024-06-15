@@ -19,7 +19,46 @@ export default function MainSection(props: Props) {
         socket.on("inc_point_red", (point: number) => {
             dispatch(AppSlice.actions.setRedPoint(state.redPoint + point))
         })
-    }, [state.redPoint, state.bluePoint])
+
+        socket.on("action_red", (action: "+1L" | "-1L") => {
+            if (action == "+1L")
+                dispatch(AppSlice.actions.setRedWarn(state.redWarn + 1))
+            else dispatch(AppSlice.actions.setRedWarn(state.redWarn - 1))
+        })
+
+        socket.on("action_blue", (action: "+1L" | "-1L") => {
+            console.log("Action blue la", action)
+            if (action == "+1L")
+                dispatch(AppSlice.actions.setBlueWarn(state.blueWarn + 1))
+            else dispatch(AppSlice.actions.setBlueWarn(state.blueWarn - 1))
+        })
+
+        socket.on("up_red", () => {
+            dispatch(AppSlice.actions.setRedWin(state.redWin + 1))
+        })
+
+        socket.on("up_blue", () => {
+            dispatch(AppSlice.actions.setBlueWin(state.blueWin + 1))
+        })
+
+        socket.on("reset_all", () => {
+            dispatch(AppSlice.actions.setStatus("not-start-yet"))
+            dispatch(AppSlice.actions.setBluePoint(0))
+            dispatch(AppSlice.actions.setCounter(0))
+            dispatch(AppSlice.actions.setRedPoint(0))
+            dispatch(AppSlice.actions.setCounter(120))
+        })
+    }, [
+        state.redPoint,
+        state.bluePoint,
+        state.status,
+        state.bluePoint,
+        state.blueWarn,
+        state.redPoint,
+        state.redWarn,
+        state.redWin,
+        state.blueWin,
+    ])
 
     React.useEffect(() => {
         socket.on("change_name_blue", (city: string) => {
@@ -29,7 +68,16 @@ export default function MainSection(props: Props) {
         socket.on("change_name_red", (city: string) => {
             dispatch(AppSlice.actions.setRedCity(city))
         })
-    }, [state.blueCity, state.redCity])
+    }, [
+        state.blueCity,
+        state.redCity,
+        state.bluePoint,
+        state.blueWarn,
+        state.redPoint,
+        state.redWarn,
+        state.redWin,
+        state.blueWin,
+    ])
 
     return (
         <>
@@ -37,6 +85,8 @@ export default function MainSection(props: Props) {
                 <ScoreLayout
                     city={state.blueCity}
                     scores={state.bluePoint}
+                    win={state.blueWin}
+                    warn={state.blueWarn}
                     flag={
                         <img
                             className="box-border border-4 border-solid border-gray-200"
@@ -50,6 +100,8 @@ export default function MainSection(props: Props) {
                 <ScoreLayout
                     city={state.redCity}
                     scores={state.redPoint}
+                    win={state.redWin}
+                    warn={state.redWarn}
                     float="right"
                     flag={
                         <img

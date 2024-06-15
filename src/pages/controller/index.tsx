@@ -14,9 +14,14 @@ import useSocket from "@/hooks/useSocket.tsx"
 import { useDebounce } from "@uidotdev/usehooks"
 import { socket } from "@/config"
 import { parseToMin } from "@/utils/time-parser.ts"
+import { AppSlice } from "@/stores/slices/app.slice.ts"
+import { useAppDispatch } from "@/hooks/useAppDispatch.tsx"
+import { useAppSelector } from "@/hooks/useAppSelector.tsx"
+import { SetupModal } from "@/pages/scoreboard/SetupModal.tsx"
 
 export default function ControllerPage() {
     useSocket()
+    const dispatch = useAppDispatch()
     const [SearchParams] = useSearchParams()
     const [editing, setEditing] = React.useState<boolean>(false)
     const [contestName, setContestName] = React.useState<string>("Tên cuộc thi")
@@ -24,6 +29,7 @@ export default function ControllerPage() {
     const [showEditor, setShowEditor] = React.useState(false)
     const contestNameDebounce = useDebounce(contestName, 300)
     const [count, setCount] = useState(0)
+    const state = useAppSelector((s) => s.app)
 
     const handleEditName = React.useCallback(() => {
         setEditing((p) => !p)
@@ -110,18 +116,40 @@ export default function ControllerPage() {
                 >
                     <MdEdit size={20} color="white" />
                 </div>
-                <div className="hover:scale-110 transition-all duration-300 ease-in bg-white/30 px-2 rounded-lg aspect-square backdrop-blur-sm grid place-items-center">
+                <button className="hover:scale-110 transition-all duration-300 ease-in bg-white/30 px-2 rounded-lg aspect-square backdrop-blur-sm grid place-items-center">
                     <TbClockCog size={20} color="white" />
-                </div>
-                <div className="hover:scale-110 transition-all duration-300 ease-in bg-white/30 px-2 rounded-lg aspect-square backdrop-blur-sm grid place-items-center">
+                </button>
+                <button
+                    onClick={() => {
+                        console.log("Reset cho tao")
+                        //! Da qua luoi r
+                        dispatch(AppSlice.actions.setStatus("paused"))
+
+                        socket.emit("reset")
+                    }}
+                    className="hover:scale-110 transition-all duration-300 ease-in bg-white/30 px-2 rounded-lg aspect-square backdrop-blur-sm grid place-items-center"
+                >
                     <GrPowerReset size={20} color="white" />
-                </div>
+                </button>
             </div>
             {/*IoTriangle*/}
-            <div className="text-white absolute -translate-y-[150%] top-1/2 left-5">
+            <div
+                onClick={() => {
+                    socket.emit("controller_up_blue")
+
+                    dispatch(AppSlice.actions.setBlueWin(state.blueWin + 1))
+                }}
+                className="text-white absolute -translate-y-[150%] top-1/2 left-5"
+            >
                 <IoTriangle className="opacity-60" color="white" size={50} />
             </div>
-            <div className="text-white absolute translate-y-1/2 top-1/2 left-5">
+            <div
+                onClick={() => {
+                    socket.emit("controller_up_red")
+                    dispatch(AppSlice.actions.setRedWin(state.redWin + 1))
+                }}
+                className="text-white absolute translate-y-1/2 top-1/2 left-5"
+            >
                 <IoTriangle
                     className="rotate-180 opacity-60"
                     color="white"
@@ -129,10 +157,10 @@ export default function ControllerPage() {
                 />
             </div>
             <div className="text-white absolute -translate-y-[150%] top-1/2 right-5">
-                <p className="opacity-70 text-7xl font-bold">1</p>
+                <p className="opacity-70 text-7xl font-bold">{state.blueWin}</p>
             </div>
             <div className="text-white absolute translate-y-1/2 top-1/2 right-5">
-                <p className="opacity-70 text-7xl font-bold">2</p>
+                <p className="opacity-70 text-7xl font-bold">{state.redWin}</p>
             </div>
             <div className="h-[50vh] bg-blue-zone grid place-items-center px-10">
                 <GridAction team="blue" className="mt-10" />
@@ -171,6 +199,10 @@ function GridAction({
         socket.emit(`controller_inc_point_${team}`, num)
     }, [])
 
+    const customAction = React.useCallback((num: string) => {
+        socket.emit(`controller_action_${team}`, num)
+    }, [])
+
     return (
         <div
             {...props}
@@ -183,8 +215,15 @@ function GridAction({
             <Button onClick={() => changePoint(2)}>+2</Button>
             <Button onClick={() => changePoint(3)}>+3</Button>
             <Button onClick={() => changePoint(-1)}>-1</Button>
-            <Button className="bg-red-600">+1L</Button>
-            <Button className="bg-green-500">-1L</Button>
+            <Button onClick={() => customAction("+1L")} className="bg-red-600">
+                +1L
+            </Button>
+            <Button
+                onClick={() => customAction("-1L")}
+                className="bg-green-500"
+            >
+                -1L
+            </Button>
         </div>
     )
 }
