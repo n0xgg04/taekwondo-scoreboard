@@ -19,12 +19,14 @@ export default function RoundInfo(props: Props) {
         >
             <div className="p-2">
                 <p className="text-[3rem] uppercase leading-10 mt-2">Match</p>
-                <p className="text-[5rem] leading-tight font-bold">001</p>
+                <p className="text-[5rem] leading-tight font-bold">
+                    {state.match}
+                </p>
             </div>
             <Counter />
             <div className="flex flex-col justify-end items-center mt-2">
                 <p className="uppercase text-[3rem]">Round</p>
-                <p className="text-[7rem]">1</p>
+                <p className="text-[7rem]">{state.round}</p>
             </div>
         </div>
     )
