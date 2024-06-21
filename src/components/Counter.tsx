@@ -19,7 +19,12 @@ export default function Counter() {
             setTimeLeft(data)
             dispatch(AppSlice.actions.setCounter(data))
         })
-    }, [])
+
+        socket.on("reset", (data) => {
+            setTimeLeft(data["battle_time"])
+            dispatch(AppSlice.actions.setCounter(data["battle_time"]))
+        })
+    })
 
     React.useEffect(() => {
         const timer = setInterval(() => {

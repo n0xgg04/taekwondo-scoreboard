@@ -26,11 +26,11 @@ const router = createBrowserRouter([
 export default function App() {
     return (
         <Suspense fallback={<Loading />}>
-            <Provider store={store}>
-                <MantineProvider>
+            <MantineProvider>
+                <Provider store={store}>
                     <RouterProvider router={router} />
-                </MantineProvider>
-            </Provider>
+                </Provider>
+            </MantineProvider>
         </Suspense>
     )
 }

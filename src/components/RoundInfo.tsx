@@ -26,7 +26,7 @@ export default function RoundInfo(props: Props) {
             <Counter />
             <div className="flex flex-col justify-end items-center mt-2">
                 <p className="uppercase text-[3rem]">Round</p>
-                <p className="text-[7rem]">{state.round}</p>
+                <p className="text-[6rem] align-text-top">{state.round}</p>
             </div>
         </div>
     )

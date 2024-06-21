@@ -16,10 +16,12 @@ type StateType = {
     contestName: string
     round: number
     match: string
+    defaultCounter: number
 }
 
 const initialState: StateType = {
     offsetTop: 0,
+    defaultCounter: 120,
     counter: 120,
     redWarn: 0,
     redWin: 0,
@@ -48,6 +50,9 @@ const slice = createSlice({
         },
         setPause: (state, action) => {
             state.status = action.payload
+        },
+        setDefaultCounter: (state, action) => {
+            state.defaultCounter = action.payload
         },
         setStatus: (status, action: PayloadAction<StateType["status"]>) => {
             status.status = action.payload
@@ -81,6 +86,12 @@ const slice = createSlice({
         },
         setBlueWin: (state, action) => {
             state.blueWin = action.payload
+        },
+        setMatch: (state, action) => {
+            state.match = action.payload
+        },
+        setRound: (state, action) => {
+            state.round = action.payload
         },
     },
 })

@@ -21,32 +21,50 @@ export default function MainSection(props: Props) {
         })
 
         socket.on("action_red", (action: "+1L" | "-1L") => {
-            if (action == "+1L")
+            if (action == "+1L") {
                 dispatch(AppSlice.actions.setRedWarn(state.redWarn + 1))
-            else dispatch(AppSlice.actions.setRedWarn(state.redWarn - 1))
+                dispatch(AppSlice.actions.setBluePoint(state.bluePoint + 1))
+            } else {
+                dispatch(AppSlice.actions.setRedWarn(state.redWarn - 1))
+                dispatch(AppSlice.actions.setBluePoint(state.bluePoint - 1))
+            }
         })
 
         socket.on("action_blue", (action: "+1L" | "-1L") => {
-            console.log("Action blue la", action)
-            if (action == "+1L")
+            if (action == "+1L") {
                 dispatch(AppSlice.actions.setBlueWarn(state.blueWarn + 1))
-            else dispatch(AppSlice.actions.setBlueWarn(state.blueWarn - 1))
+                dispatch(AppSlice.actions.setRedPoint(state.redPoint + 1))
+            } else {
+                dispatch(AppSlice.actions.setBlueWarn(state.blueWarn - 1))
+                dispatch(AppSlice.actions.setRedPoint(state.redPoint - 1))
+            }
         })
 
         socket.on("up_red", () => {
             dispatch(AppSlice.actions.setRedWin(state.redWin + 1))
         })
 
+        socket.on("down_red", () => {
+            dispatch(AppSlice.actions.setRedWin(state.redWin - 1))
+        })
+
         socket.on("up_blue", () => {
             dispatch(AppSlice.actions.setBlueWin(state.blueWin + 1))
+        })
+
+        socket.on("down_blue", () => {
+            dispatch(AppSlice.actions.setBlueWin(state.blueWin - 1))
         })
 
         socket.on("reset_all", () => {
             dispatch(AppSlice.actions.setStatus("not-start-yet"))
             dispatch(AppSlice.actions.setBluePoint(0))
-            dispatch(AppSlice.actions.setCounter(0))
             dispatch(AppSlice.actions.setRedPoint(0))
-            dispatch(AppSlice.actions.setCounter(120))
+            dispatch(AppSlice.actions.setCounter(state.defaultCounter))
+            dispatch(AppSlice.actions.setRedWin(0))
+            dispatch(AppSlice.actions.setBlueWin(0))
+            dispatch(AppSlice.actions.setRedWarn(0))
+            dispatch(AppSlice.actions.setBlueWarn(0))
         })
     }, [
         state.redPoint,
