@@ -25,6 +25,23 @@ export default function ScoreboardPage() {
         dispatch(AppSlice.actions.setStatus("not-start-yet"))
     }, [])
 
+    React.useEffect(() => {
+        socket.on("set_info", (data) => {
+            console.log(data)
+            dispatch(AppSlice.actions.setBlueCity(data["blue_name"]))
+            dispatch(AppSlice.actions.setRedCity(data["red_name"]))
+            dispatch(AppSlice.actions.setDefaultCounter(data["battle_time"]))
+            dispatch(AppSlice.actions.setMatch(data["match"]))
+            dispatch(AppSlice.actions.setRound(data["round"]))
+        })
+    }, [
+        state.blueCity,
+        state.redCity,
+        state.defaultCounter,
+        state.match,
+        state.round,
+    ])
+
     return (
         <Scoreboard>
             {!state.isRealtime && (

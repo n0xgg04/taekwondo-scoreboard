@@ -47,7 +47,7 @@ export default function ScoreLayout({
                     marginRight: float == "left" ? 250 : undefined,
                 }}
                 className={twMerge(
-                    "py-5 px-20 text-white z-10 absolute bottom-0 right-0 left-0 flex flex-row justify-between",
+                    "py-1 px-10 text-white z-10 absolute bottom-0 right-0 left-0 flex flex-row justify-between",
                     float === "right" && "flex-row-reverse",
                 )}
             >
